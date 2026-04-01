@@ -1,0 +1,859 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Module Académique : Administration et Sécurisation des Infrastructures Systèmes Windows Server</title>
+    <!-- Intégration de Mermaid pour les diagrammes -->
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+    <script>mermaid.initialize({startOnLoad:true, theme:'neutral'});</script>
+    <!-- Styles CSS -->
+    <style>
+        /* Définition des polices et variables */
+        :root {
+            --color-primary: #1a365d;
+            --color-secondary: #2d3748;
+            --color-accent: #2b6cb0;
+            --color-law: #c53030;
+            --color-illusion: #b7791f;
+            --color-background: #ffffff;
+            --color-surface: #f7fafc;
+            --color-border: #e2e8f0;
+            --font-heading: 'Space Grotesk', 'Segoe UI', system-ui, sans-serif;
+            --font-body: 'Source Sans 3', 'Inter', 'Open Sans', sans-serif;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font-body);
+            line-height: 1.7;
+            color: var(--color-secondary);
+            background-color: var(--color-background);
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        a {
+            color: var(--color-accent);
+            text-decoration: none;
+        }
+
+        /* Header */
+        .page-header {
+            background-color: var(--color-primary);
+            color: white;
+            padding: 2rem 1rem;
+            text-align: center;
+            border-bottom: 5px solid var(--color-accent);
+        }
+
+        .page-header h1 {
+            font-family: var(--font-heading);
+            font-size: 2.2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .page-header .subtitle {
+            font-size: 1.1rem;
+            opacity: 0.9;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        /* Navigation principale */
+        #main-nav {
+            background-color: var(--color-surface);
+            border-bottom: 1px solid var(--color-border);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 1rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .nav-logo {
+            font-family: var(--font-heading);
+            font-weight: bold;
+            color: var(--color-primary);
+            font-size: 1.5rem;
+            padding: 1rem 0;
+        }
+
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-menu a {
+            color: var(--color-secondary);
+            font-weight: 600;
+            padding: 1rem 0;
+            display: block;
+            position: relative;
+            transition: color 0.2s;
+        }
+
+        .nav-menu a:hover, .nav-menu a:focus {
+            color: var(--color-accent);
+        }
+
+        .nav-menu a.active {
+            color: var(--color-accent);
+            border-bottom: 3px solid var(--color-accent);
+        }
+
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+            gap: 4px;
+        }
+
+        .hamburger span {
+            height: 3px;
+            width: 25px;
+            background-color: var(--color-primary);
+            border-radius: 2px;
+        }
+
+        /* Contenu principal en deux colonnes */
+        .main-wrapper {
+            display: flex;
+            flex: 1;
+            max-width: 1400px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        /* Sidebar / Navigation latérale */
+        #sidebar {
+            width: 280px;
+            background-color: var(--color-surface);
+            border-right: 1px solid var(--color-border);
+            padding: 2rem 1rem;
+            position: sticky;
+            top: 80px;
+            align-self: flex-start;
+            max-height: calc(100vh - 80px);
+            overflow-y: auto;
+            flex-shrink: 0;
+        }
+
+        .sidebar-title {
+            font-family: var(--font-heading);
+            font-size: 1.2rem;
+            color: var(--color-primary);
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--color-accent);
+        }
+
+        .sidebar-nav {
+            list-style: none;
+        }
+
+        .sidebar-nav li {
+            margin-bottom: 0.5rem;
+        }
+
+        .sidebar-nav a {
+            display: block;
+            padding: 0.6rem 1rem;
+            border-radius: 6px;
+            color: var(--color-secondary);
+            transition: all 0.2s;
+        }
+
+        .sidebar-nav a:hover, .sidebar-nav a:focus, .sidebar-nav a.active-section {
+            background-color: rgba(43, 108, 176, 0.1);
+            color: var(--color-accent);
+            font-weight: 600;
+        }
+
+        /* Zone de contenu principal */
+        #content {
+            flex: 1;
+            padding: 2rem;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .module-section {
+            margin-bottom: 4rem;
+            scroll-margin-top: 100px;
+            background-color: white;
+            border-radius: 8px;
+            padding: 2.5rem;
+            border: 1px solid var(--color-border);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.03);
+        }
+
+        .section-header {
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--color-border);
+        }
+
+        .section-header h2 {
+            font-family: var(--font-heading);
+            font-size: 2rem;
+            color: var(--color-primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .section-tag {
+            display: inline-block;
+            background-color: var(--color-accent);
+            color: white;
+            font-size: 0.8rem;
+            font-weight: bold;
+            padding: 0.3rem 0.8rem;
+            border-radius: 4px;
+            margin-bottom: 1rem;
+        }
+
+        /* Styles typographiques spécifiques */
+        h3 {
+            font-family: var(--font-heading);
+            font-size: 1.5rem;
+            color: var(--color-secondary);
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        h4 {
+            font-family: var(--font-heading);
+            font-size: 1.2rem;
+            color: var(--color-secondary);
+            margin-top: 1.5rem;
+            margin-bottom: 0.8rem;
+        }
+
+        p, ul, ol {
+            margin-bottom: 1.5rem;
+        }
+
+        ul, ol {
+            padding-left: 1.5rem;
+        }
+
+        li {
+            margin-bottom: 0.5rem;
+        }
+
+        /* Éléments de mise en forme sémantique */
+        .analogy-box {
+            background-color: rgba(247, 250, 252, 0.8);
+            border-left: 4px solid var(--color-accent);
+            padding: 1.5rem;
+            margin: 2rem 0;
+            border-radius: 0 6px 6px 0;
+        }
+
+        .concept-key {
+            color: var(--color-accent);
+            font-weight: 700;
+            background-color: rgba(43, 108, 176, 0.1);
+            padding: 0.1rem 0.4rem;
+            border-radius: 3px;
+        }
+
+        .law-box {
+            background-color: rgba(197, 48, 48, 0.05);
+            border-left: 4px solid var(--color-law);
+            padding: 1.5rem;
+            margin: 2rem 0;
+            border-radius: 0 6px 6px 0;
+        }
+
+        .illusion-box {
+            background-color: rgba(183, 121, 31, 0.05);
+            border-left: 4px solid var(--color-illusion);
+            padding: 1.5rem;
+            margin: 2rem 0;
+            border-radius: 0 6px 6px 0;
+        }
+
+        .equation-box {
+            text-align: center;
+            font-family: var(--font-heading);
+            font-size: 1.2rem;
+            padding: 1.5rem;
+            margin: 2rem 0;
+            background-color: var(--color-surface);
+            border-radius: 8px;
+            border: 1px dashed var(--color-border);
+        }
+
+        .mermaid-diagram {
+            margin: 2rem 0;
+            padding: 1rem;
+            background-color: white;
+            border: 1px solid var(--color-border);
+            border-radius: 8px;
+            overflow-x: auto;
+            text-align: center;
+        }
+
+        /* Objectifs cognitifs */
+        .cognitive-objectives {
+            background: linear-gradient(135deg, var(--color-primary) 0%, #2c5282 100%);
+            color: white;
+            padding: 2.5rem;
+            border-radius: 10px;
+            margin: 3rem 0;
+        }
+
+        .cognitive-objectives h3 {
+            color: white;
+            text-align: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .cognitive-objectives ul {
+            list-style: none;
+            padding-left: 0;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .cognitive-objectives li {
+            margin-bottom: 1rem;
+            padding-left: 1.8rem;
+            position: relative;
+        }
+
+        .cognitive-objectives li:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #68d391;
+            font-weight: bold;
+        }
+
+        /* Footer */
+        .page-footer {
+            background-color: var(--color-primary);
+            color: white;
+            text-align: center;
+            padding: 2rem 1rem;
+            margin-top: auto;
+            font-size: 0.9rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .main-wrapper {
+                flex-direction: column;
+            }
+
+            #sidebar {
+                width: 100%;
+                position: static;
+                top: auto;
+                max-height: none;
+                border-right: none;
+                border-bottom: 1px solid var(--color-border);
+            }
+
+            .nav-menu {
+                gap: 1rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .hamburger {
+                display: flex;
+            }
+
+            .nav-menu {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background-color: var(--color-surface);
+                flex-direction: column;
+                padding: 1rem;
+                border-top: 1px solid var(--color-border);
+                box-shadow: 0 5px 10px rgba(0,0,0,0.1);
+            }
+
+            .nav-menu.active {
+                display: flex;
+            }
+
+            .nav-menu li {
+                width: 100%;
+            }
+
+            .module-section {
+                padding: 1.5rem;
+            }
+
+            .page-header h1 {
+                font-size: 1.8rem;
+            }
+        }
+
+        @media print {
+            #main-nav, #sidebar, .page-footer, .hamburger {
+                display: none;
+            }
+
+            .main-wrapper {
+                flex-direction: column;
+            }
+
+            #content {
+                padding: 0;
+            }
+
+            .module-section {
+                border: none;
+                box-shadow: none;
+                page-break-inside: avoid;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="page-header">
+        <h1>📘 Module Académique : Administration et Sécurisation des Infrastructures Systèmes Windows Server</h1>
+        <p class="subtitle">Reconstruction académique ultra-approfondie — Gouvernance, Identité, Réseau et Résilience (Niveau 500%+)</p>
+    </header>
+
+    <nav id="main-nav">
+        <div class="nav-container">
+            <div class="nav-logo">🖥️ Windows Server</div>
+            <div class="hamburger" id="hamburger-btn">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+            <ul class="nav-menu" id="main-menu">
+                <li><a href="#analogie" class="active">Analogie Maître</a></li>
+                <li><a href="#modele-mental">Modèle Mental</a></li>
+                <li><a href="#architecture">Architecture</a></li>
+                <li><a href="#mecanismes">Mécanismes</a></li>
+                <li><a href="#protocoles">Protocoles & Services</a></li>
+                <li><a href="#illusions">Illusions Conceptuelles</a></li>
+                <li><a href="#raisonnement">Raisonnement</a></li>
+                <li><a href="#synthese">Synthèse</a></li>
+                <li><a href="#extension">Extension</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="main-wrapper">
+        <aside id="sidebar">
+            <div class="sidebar-title">Navigation du Module</div>
+            <ul class="sidebar-nav">
+                <li><a href="#analogie" class="active-section">🧠 Analogie Systémique Maître</a></li>
+                <li><a href="#modele-mental">🧩 Modèle Mental Global</a></li>
+                <li><a href="#architecture">1️⃣ Architecture Conceptuelle Fondamentale</a></li>
+                <li><a href="#mecanismes">2️⃣ Mécanismes Internes Détaillés</a></li>
+                <li><a href="#protocoles">3️⃣ Protocoles, Standards & Outils</a></li>
+                <li><a href="#illusions">4️⃣ Illusions Conceptuelles & Pièges Opérationnels</a></li>
+                <li><a href="#raisonnement">5️⃣ Raisonnement de l'Expert Senior</a></li>
+                <li><a href="#synthese">6️⃣ Synthèse Mémorisable Long Terme</a></li>
+                <li><a href="#extension">7️⃣ Extension au-delà du Corpus (500%+)</a></li>
+            </ul>
+        </aside>
+
+        <main id="content">
+            <!-- Section Analogie -->
+            <section id="analogie" class="module-section">
+                <div class="section-header">
+                    <span class="section-tag">Analogie Centrale</span>
+                    <h2>🧠 Analogie Systémique Maître : La Cité-État Numérique</h2>
+                </div>
+                <div class="analogy-box">
+                    <p>Imaginez une <strong>cité-état autonome</strong> nommée <em>NEXTINFO</em>. Cette cité possède ses propres lois, sa police, ses registres d'identité, ses routes, ses entrepôts, ses horloges et ses mécanismes de défense.</p>
+                </div>
+                
+                <h4>Mapping Explicite</h4>
+                <ul>
+                    <li><span class="concept-key">Carte d'identité nationale</span> → Compte Active Directory (utilisateur, ordinateur)</li>
+                    <li><span class="concept-key">Mairie centrale / État civil</span> → Contrôleur de domaine (DC) et base de données NTDS.dit</li>
+                    <li><span class="concept-key">Passeport pour les quartiers étrangers</span> → Relation d'approbation (Trust) entre domaines ou forêts</li>
+                    <li><span class="concept-key">Plan cadastral et adressage des rues</span> → DNS : zones, enregistrements A, CNAME, SRV</li>
+                    <li><span class="concept-key">Agence de location de véhicules</span> → Serveur DHCP (attribution temporaire d'adresses IP)</li>
+                    <li><span class="concept-key">Garde nationale / Système d'alarme</span> → Pare-feu Windows, stratégies d'audit, AppLocker</li>
+                    <li><span class="concept-key">Archives centrales (consultables uniquement par les gardiens)</span> → Stratégies de groupe (GPO) et magasin central ADMX</li>
+                    <li><span class="concept-key">Coffre-fort scellé pour documents secrets</span> → Chiffrement EFS, certificats, PKI</li>
+                    <li><span class="concept-key">Commissariat de quartier (réplique de l'état civil)</span> → Contrôleur de domaine en lecture seule (RODC)</li>
+                    <li><span class="concept-key">Catalogue des citoyens inter-quartiers</span> → Catalogue global (GC)</li>
+                    <li><span class="concept-key">Routes et autoroutes avec limitations de vitesse</span> → Sites AD, liens de site, planification de réplication</li>
+                    <li><span class="concept-key">Notaire certifiant les documents officiels</span> → Autorité de certification (CA) et certificats numériques</li>
+                    <li><span class="concept-key">Gestionnaire des stocks des entrepôts</span> → DFS (espace de noms) et FSRM (quotas, filtres)</li>
+                    <li><span class="concept-key">Horloge universelle de la cité</span> → PDC Emulator, synchronisation horaire Kerberos</li>
+                    <li><span class="concept-key">Système de sauvegarde des archives</span> → Sauvegarde Windows Server, clichés instantanés, Azure Backup</li>
+                </ul>
+                <p><strong>Interaction clé</strong> : Un citoyen (utilisateur) se rend à la mairie (DC) pour obtenir sa carte d'identité (création de compte). Pour se déplacer dans un quartier éloigné (autre sous-réseau), il utilise le plan cadastral (DNS). S'il veut un véhicule, il va à l'agence de location (DHCP). Toute tentative d'entrée non autorisée dans une zone sensible (serveur de fichiers) déclenche la garde nationale (audit, pare-feu). Les règles de circulation sont définies par les GPO (lois locales).</p>
+            </section>
+
+            <!-- Section Modèle Mental -->
+            <section id="modele-mental" class="module-section">
+                <div class="section-header">
+                    <span class="section-tag">Schéma Directeur</span>
+                    <h2>🧩 Modèle Mental Global du Système</h2>
+                </div>
+                <p>L'infrastructure Windows Server est un <span class="concept-key">écosystème autorégulé</span> où chaque composant remplit un rôle vital. Sa stabilité repose sur trois piliers : <strong>l'identité (Active Directory)</strong>, <strong>la connectivité (DNS/DHCP)</strong> et <strong>la gouvernance (GPO)</strong>.</p>
+                
+                <div class="mermaid-diagram">
+                    <div class="mermaid">
+graph TD
+    A[Active Directory] --> B[Contrôleur de domaine]
+    A --> C[Catalogue global]
+    A --> D[RODC]
+    E[DNS] --> F[Résolution de noms]
+    G[DHCP] --> H[Attribution IP]
+    I[GPO] --> J[Configuration]
+    I --> K[Sécurité]
+    I --> L[Déploiement]
+    M[Sauvegarde] --> N[WSB / Azure]
+    O[DFS] --> P[Haute disponibilité]
+    Q[PKI] --> R[Chiffrement / Confiance]
+    
+    B <--> E
+    G --> F
+    I --> B
+    J --> B
+    R --> A
+    N --> A
+                    </div>
+                </div>
+
+                <h3>Composants organiques et rôles vitaux</h3>
+                <ul>
+                    <li><span class="concept-key">Cerveau (Contrôleurs de domaine)</span> : Stocke et réplique l'annuaire (identités, politiques). Le PDC Emulator fait office d'horloge maîtresse.</li>
+                    <li><span class="concept-key">Système nerveux (DNS)</span> : Permet de localiser tous les organes (serveurs, services). Sans lui, le cerveau ne peut communiquer.</li>
+                    <li><span class="concept-key">Système circulatoire (DHCP)</span> : Distribue automatiquement les adresses IP, assurant la connectivité des membres du réseau.</li>
+                    <li><span class="concept-key">Système immunitaire (GPO, Pare-feu, Audit)</span> : Définit les règles, empêche les intrusions, surveille les comportements anormaux.</li>
+                    <li><span class="concept-key">Mémoire à long terme (Sauvegarde, DFS, FSRM)</span> : Protège les données, assure leur disponibilité et optimise le stockage.</li>
+                </ul>
+
+                <h3>Points de défaillance critiques et cascade</h3>
+                <ul>
+                    <li>Perte de tous les contrôleurs de domaine → plus d'authentification possible.</li>
+                    <li>Indisponibilité du DNS → impossibilité de joindre les services et les DC.</li>
+                    <li>Corruption du SYSVOL → plus d'application des GPO.</li>
+                    <li><strong>Cascade</strong> : Un problème DNS empêche la localisation du DC, ce qui bloque l'authentification, rendant inaccessibles les ressources partagées.</li>
+                </ul>
+            </section>
+
+            <!-- Section Architecture -->
+            <section id="architecture" class="module-section">
+                <div class="section-header">
+                    <span class="section-tag">Fondamentaux</span>
+                    <h2>1️⃣ Architecture Conceptuelle Fondamentale</h2>
+                </div>
+                
+                <h3>Rôle métier/technique</h3>
+                <p>Fournir une infrastructure de gestion centralisée, sécurisée et résiliente pour les identités (utilisateurs, ordinateurs, services), les ressources (fichiers, imprimantes) et les politiques de sécurité. C'est le socle sur lequel repose l'ensemble du Système d'Information (SI) de l'entreprise.</p>
+                
+                <h3>Positionnement dans les modèles de référence</h3>
+                <ul>
+                    <li><span class="concept-key">Modèle OSI</span> : Active Directory s'appuie sur LDAP (couche 7), Kerberos (couche 7) et DNS (couche 7). DHCP (couche 7) distribue les configurations IP.</li>
+                    <li><span class="concept-key">TCP/IP</span> : L'ensemble des services repose sur TCP/IP, avec des ports spécifiques (389 LDAP, 88 Kerberos, 53 DNS, 67/68 DHCP).</li>
+                    <li><span class="concept-key">Zero Trust</span> : AD DS est un pilier central. Associé à AD CS, AD FS et les GPO, il permet de mettre en œuvre la vérification explicite et l'accès au moindre privilège.</li>
+                </ul>
+                
+                <h3>Principes philosophiques directeurs</h3>
+                <ul>
+                    <li><span class="concept-key">Moindre privilège (Least Privilege)</span> : Les utilisateurs et services n'ont que les droits strictement nécessaires.</li>
+                    <li><span class="concept-key">Fail-secure</span> : En cas de défaillance d'un mécanisme de sécurité, le système doit refuser l'accès plutôt que de l'accorder.</li>
+                    <li><span class="concept-key">Séparation des responsabilités</span> : Délégation de l'administration via les OU et les groupes de sécurité.</li>
+                    <li><span class="concept-key">Résilience par la redondance</span> : Multiplicité des contrôleurs de domaine, des serveurs DNS/DHCP, et technologies comme DFS ou basculement DHCP.</li>
+                </ul>
+            </section>
+
+            <!-- Section Mécanismes -->
+            <section id="mecanismes" class="module-section">
+                <div class="section-header">
+                    <span class="section-tag">Fonctionnement Causal</span>
+                    <h2>2️⃣ Mécanismes Internes Détaillés — La Machinerie</h2>
+                </div>
+
+                <h3>A. Authentification Kerberos</h3>
+                <div class="mermaid-diagram">
+                    <div class="mermaid">
+sequenceDiagram
+    participant C as Client
+    participant KDC as KDC (DC)
+    participant S as Serveur de ressources
+
+    C->>KDC: AS-REQ (username)
+    KDC-->>C: AS-REP (TGT chiffré)
+    C->>KDC: TGS-REQ (TGT + service)
+    KDC-->>C: TGS-REP (Ticket de service)
+    C->>S: Demande avec Ticket de service
+    S-->>C: Accès accordé
+                    </div>
+                </div>
+                <p><strong>Fonctionnement nominal</strong> : L'utilisateur saisit son mot de passe. Le client envoie une requête AS-REQ au KDC (contrôleur de domaine). Le KDC vérifie l'identité et génère un TGT chiffré. Pour accéder à un service, le client présente le TGT et reçoit un ticket de service (ST) chiffré avec la clé du service cible. Le service déchiffre le ST et accorde l'accès.</p>
+                <p><strong>Conditions de validité</strong> : Horloge synchronisée (tolérance 5 minutes), compte actif et non verrouillé, enregistrement SRV _kerberos._tcp dans le DNS.</p>
+
+                <h3>B. Réplication Active Directory (Multimaster)</h3>
+                <p><strong>Fonctionnement nominal</strong> : Une modification est effectuée sur un DC. Le DC incrémente le numéro de version (USN) de l'objet. Le KCC (Knowledge Consistency Checker) calcule automatiquement une topologie de réplication. Le DC source envoie une notification à ses partenaires. Le DC destinataire demande les modifications via RPC. Les données sont transférées et appliquées.</p>
+                <p><strong>Limites et cas frontières</strong> : En cas de conflit (même attribut modifié simultanément sur deux DC), le mécanisme s'appuie sur l'USN (numéro de version le plus élevé) et, en dernier recours, sur l'identifiant unique (GUID).</p>
+            </section>
+
+            <!-- Section Protocoles -->
+            <section id="protocoles" class="module-section">
+                <div class="section-header">
+                    <span class="section-tag">Éléments du Système</span>
+                    <h2>3️⃣ Protocoles, Standards & Outils — L'Exhaustivité Technique</h2>
+                </div>
+                
+                <h3>Service DNS</h3>
+                <ul>
+                    <li><span class="concept-key">Objectif</span> : Résoudre les FQDN en adresses IP (A/AAAA), et inversement (PTR). Essentiel pour localiser les contrôleurs de domaine (enregistrements SRV).</li>
+                    <li><span class="concept-key">Enregistrements critiques</span> : A/AAAA (hôte), CNAME (alias), MX (messagerie), SRV (service), SOA (autorité de zone), NS (serveurs de noms).</li>
+                    <li><span class="concept-key">Commandes</span> : <code>ipconfig /displaydns</code>, <code>ipconfig /flushdns</code>, <code>ipconfig /registerdns</code>, <code>dnscmd /config /CacheLockingPercent 60</code>.</li>
+                    <li><span class="concept-key">Erreur classique</span> : Configurer un serveur DNS secondaire sans avoir créé de zone secondaire → pas de résilience.</li>
+                </ul>
+                
+                <h3>Service DHCP</h3>
+                <ul>
+                    <li><span class="concept-key">Objectif</span> : Attribuer dynamiquement des configurations IP (adresse, masque, passerelle, DNS).</li>
+                    <li><span class="concept-key">Séquence DORA</span> : Discover → Offer → Request → ACK.</li>
+                    <li><span class="concept-key">Bail (Lease)</span> : Durée de validité (8 jours par défaut). Renouvellement à 50%.</li>
+                    <li><span class="concept-key">Basculement</span> : Deux serveurs en mode « équilibrage de charge » ou « secours » avec secret partagé.</li>
+                    <li><span class="concept-key">Piège classique</span> : Autoriser un serveur DHCP dans AD est obligatoire pour un serveur membre, sans quoi il ne distribue pas d'adresses.</li>
+                </ul>
+                
+                <h3>Stratégies de groupe (GPO)</h3>
+                <ul>
+                    <li><span class="concept-key">Objectif</span> : Centraliser la configuration des utilisateurs et ordinateurs.</li>
+                    <li><span class="concept-key">Stockage</span> : Conteneur GPO (AD) + Modèle GPO (SYSVOL). Réplication via DFS-R.</li>
+                    <li><span class="concept-key">Ordre d'application (LSDOU)</span> : Local → Site → Domaine → Unité d'organisation.</li>
+                    <li><span class="concept-key">Commandes</span> : <code>gpupdate /force</code>, <code>gpresult /R</code>, <code>rsop.msc</code>.</li>
+                    <li><span class="concept-key">Magasin central</span> : <code>\\domaine\SYSVOL\domaine\Policies\PolicyDefinitions</code> centralisant les fichiers ADMX/ADML.</li>
+                </ul>
+            </section>
+
+            <!-- Section Illusions -->
+            <section id="illusions" class="module-section">
+                <div class="section-header">
+                    <span class="section-tag">Pièges à Éviter</span>
+                    <h2>4️⃣ Illusions Conceptuelles & Pièges Opérationnels — La Sagesse Négative</h2>
+                </div>
+
+                <div class="illusion-box">
+                    <h4>Illusion 1 : « Un serveur DHCP autorisé dans AD peut distribuer des IP à tout le réseau sans autre contrainte. »</h4>
+                    <p><strong>Pourquoi elle est séduisante</strong> : L'interface graphique indique simplement « Autoriser ».</p>
+                    <p><strong>Pourquoi elle est fausse</strong> : L'autorisation dans AD est obligatoire mais ne suffit pas. Si l'étendue n'est pas activée, ou si le filtre par adresse MAC restreint les clients, la distribution échoue.</p>
+                    <p><strong>Modèle mental correct</strong> : Le serveur DHCP autorisé est un prérequis, mais l'activation de l'étendue, le bon périmètre des adresses, et l'absence de conflit de filtres sont des étapes distinctes.</p>
+                </div>
+
+                <div class="illusion-box">
+                    <h4>Illusion 2 : « La configuration réseau du DNS pointe vers 127.0.0.1, c'est parfait pour la résilience. »</h4>
+                    <p><strong>Pourquoi elle est séduisante</strong> : Le DNS local est la source la plus rapide et la plus directe.</p>
+                    <p><strong>Pourquoi elle est fausse</strong> : Si le DC est configuré avec 127.0.0.1 comme premier serveur DNS, au démarrage, il ne peut pas contacter un autre DC pour répliquer les zones.</p>
+                    <p><strong>Modèle mental correct</strong> : Les bonnes pratiques imposent de configurer un autre serveur DNS (IP fixe d'un autre DC) en premier, et la boucle locale en second.</p>
+                </div>
+
+                <div class="illusion-box">
+                    <h4>Illusion 3 : « Bloquer l'héritage sur une OU stoppe l'application de toutes les GPO parentes. »</h4>
+                    <p><strong>Pourquoi elle est séduisante</strong> : L'option « Bloquer l'héritage » suggère une isolation totale.</p>
+                    <p><strong>Pourquoi elle est fausse</strong> : L'option « Appliqué » sur une GPO parente a priorité sur le blocage.</p>
+                    <p><strong>Modèle mental correct</strong> : Le blocage d'héritage est une barrière standard, mais l'option « Appliqué » (Enforced) est un passage obligé qui ignore cette barrière.</p>
+                </div>
+            </section>
+
+            <!-- Section Raisonnement -->
+            <section id="raisonnement" class="module-section">
+                <div class="section-header">
+                    <span class="section-tag">Méthode Expert</span>
+                    <h2>5️⃣ Raisonnement de l'Expert Senior — Pensée Systémique Appliquée</h2>
+                </div>
+                
+                <h3>Penser en chaînes causales</h3>
+                <p><strong>Scénario</strong> : Un utilisateur ne peut pas se connecter au domaine.</p>
+                <ol>
+                    <li><strong>Vérifier l'évidence</strong> : Câble réseau branché ? IP via <code>ipconfig</code> ?</li>
+                    <li><strong>Problème DHCP</strong> : IP 169.254.x.x (APIPA) → Vérifier service DHCP, étendue, basculement.</li>
+                    <li><strong>Problème DNS</strong> : <code>nslookup domaine.priv</code> échoue → Vérifier serveurs DNS configurés, zones, enregistrements SRV.</li>
+                    <li><strong>Problème d'authentification</strong> : Vérifier état du compte, heure, DC accessibles (<code>nltest /dsgetdc:domaine</code>).</li>
+                </ol>
+                
+                <h3>Diagnostiquer par hypothèses réfutables</h3>
+                <ul>
+                    <li><strong>Hypothèse</strong> : « Le client ne trouve pas le contrôleur de domaine. »<br/>
+                    <strong>Test</strong> : <code>nslookup -type=SRV _kerberos._tcp.domaine.priv</code>. Aucune réponse → hypothèse validée.</li>
+                    <li><strong>Hypothèse</strong> : « Le mot de passe du compte ordinateur est désynchronisé. »<br/>
+                    <strong>Test</strong> : Réinitialiser le canal sécurisé via AD ou <code>netdom resetpwd</code>.</li>
+                </ul>
+                
+                <h3>Lire les signaux faibles</h3>
+                <ul>
+                    <li><span class="concept-key">ID Événement 5783 (NETLOGON)</span> : Indique qu'un client n'a pas pu contacter un DC. Récurrence annonce une indisponibilité.</li>
+                    <li><span class="concept-key">ID Événement 4013 (DNS)</span> : Indique que le serveur DNS n'a pas encore chargé les zones AD. Récurrence signale un problème de disponibilité AD DS.</li>
+                    <li><span class="concept-key">Logs WindowsUpdate.log</span> : Mises à jour en attente prolongée → problème WSUS ou espace disque.</li>
+                </ul>
+            </section>
+
+            <!-- Section Synthèse -->
+            <section id="synthese" class="module-section">
+                <div class="section-header">
+                    <span class="section-tag">À Retenir Absolument</span>
+                    <h2>6️⃣ Synthèse Mémorisable Long Terme — Le Code Mental</h2>
+                </div>
+
+                <h3>Lois invariantes du domaine</h3>
+                <div class="law-box">
+                    <p><strong>Loi de la dépendance AD-DNS</strong> : Sans DNS fonctionnel et correctement configuré (zones, enregistrements SRV), il n'y a pas d'Active Directory opérationnel.</p>
+                    <p><strong>Loi de la réplication cohérente</strong> : Toute modification de l'annuaire doit être répliquée. Le KCC assure la topologie, mais l'administrateur doit garantir la connectivité réseau et la synchronisation horaire.</p>
+                    <p><strong>Loi du moindre privilège</strong> : Une GPO ou une délégation qui accorde plus de droits que nécessaire est une porte d'entrée potentielle.</p>
+                    <p><strong>Loi de l'horloge unique</strong> : La différence horaire entre clients, DC et serveurs ne doit jamais excéder 5 minutes pour que Kerberos fonctionne.</p>
+                </div>
+
+                <h3>Équations mentales</h3>
+                <div class="equation-box">
+                    <p><strong>Sécurité</strong> = (Surface d'attaque) × (Motivation) — (Contrôles efficaces)</p>
+                    <p><strong>Disponibilité</strong> = (Redondance des services critiques) — (Points de défaillance uniques)</p>
+                    <p><strong>Performance DNS</strong> = (Cache efficace) — (Enregistrements obsolètes) + (Redirecteurs optimisés)</p>
+                </div>
+
+                <h3>Checklist cognitive pour opérations critiques</h3>
+                <ul>
+                    <li><strong>Avant de promouvoir un DC</strong> : Vérifier résolution DNS (<code>nslookup</code>), synchronisation horaire, existence des prérequis AD prep.</li>
+                    <li><strong>Avant de modifier une GPO liée</strong> : Créer un groupe de sécurité de test, filtrer la GPO, valider, puis élargir.</li>
+                    <li><strong>Avant d'arrêter un service (DNS, DHCP, AD DS)</strong> : Vérifier la redondance, anticiper l'impact, planifier une fenêtre de maintenance.</li>
+                </ul>
+
+                <h3>Retour à l'analogie centrale</h3>
+                <div class="analogy-box">
+                    <p>La cité-état <em>NEXTINFO</em> prospère quand sa mairie (DC) est répliquée dans chaque quartier (sites), que son plan cadastral (DNS) est à jour, que ses règles (GPO) sont claires et appliquées, et que ses archives (sauvegardes) sont protégées hors de la ville. Un citoyen (utilisateur) peut se déplacer sereinement car son identité est reconnue partout.</p>
+                </div>
+            </section>
+
+            <!-- Section Extension -->
+            <section id="extension" class="module-section">
+                <div class="section-header">
+                    <span class="section-tag">Perspectives</span>
+                    <h2>7️⃣ Extension au-delà du Corpus (500%+)</h2>
+                </div>
+                
+                <h3>Concepts adjacents indispensables</h3>
+                <ul>
+                    <li><span class="concept-key">Azure AD Connect</span> : Pont entre Active Directory local et Azure AD, permettant l'authentification unique (SSO) et la synchronisation des identités vers le cloud.</li>
+                    <li><span class="concept-key">AD RMS / Azure Information Protection</span> : Extension de la sécurité au contenu des documents eux-mêmes, empêchant la copie, l'impression ou le transfert même en dehors du périmètre réseau.</li>
+                    <li><span class="concept-key">PowerShell DSC (Desired State Configuration)</span> : Configuration déclarative de l'infrastructure, permettant reproductibilité et intégration DevOps.</li>
+                </ul>
+                
+                <h3>Perspective vendor-neutral</h3>
+                <ul>
+                    <li><span class="concept-key">Cisco</span> : Interopère avec AD via RADIUS (802.1X) et DHCP via DHCP Snooping.</li>
+                    <li><span class="concept-key">Open Source (Samba 4)</span> : Peut remplacer un contrôleur de domaine AD, mais la gestion des GPO et fonctionnalités avancées est moins mature.</li>
+                </ul>
+                
+                <h3>Évolution future et tendances</h3>
+                <div class="mermaid-diagram">
+                    <div class="mermaid">
+graph LR
+    A[Cloud-Native] --> B[Azure DNS / Firewall]
+    A --> C[Azure AD]
+    D[Modern Authentication] --> E[OAuth 2.0]
+    D --> F[OpenID Connect]
+    D --> G[Windows Hello for Business]
+    H[Zero Trust] --> I[Micro-segmentation]
+    H --> J[Conditional Access]
+                    </div>
+                </div>
+                <ul>
+                    <li><strong>Cloud-Native</strong> : Migration des services (DNS, DHCP) vers des solutions managées (Azure DNS, Azure Firewall).</li>
+                    <li><strong>Modern Authentication</strong> : Kerberos progressivement remplacé par OAuth 2.0 et OpenID Connect.</li>
+                    <li><strong>Sécurité Zero Trust</strong> : Modèle « Network Perimeter » disparaît au profit de politiques d'accès conditionnel et micro-segmentation.</li>
+                </ul>
+                
+                <div class="cognitive-objectives">
+                    <h3>🎯 Objectifs Cognitifs Finaux — Administrateur Système 500%+</h3>
+                    <p>À la fin de ce module, vous ne voyez plus une infrastructure Windows Server comme une simple collection de serveurs, mais comme un <strong>écosystème vivant et autorégulé</strong>. Vous comprenez simultanément :</p>
+                    <ul>
+                        <li>Les mécanismes d'authentification Kerberos et leur dépendance à l'horloge et au DNS</li>
+                        <li>La réplication multimaster et la gestion des conflits via USN et GUID</li>
+                        <li>Les relations de confiance entre forêts et leurs implications de sécurité</li>
+                        <li>L'impact d'une GPO sur l'ensemble du parc et l'ordre d'application LSDOU</li>
+                        <li>Les compromis fondamentaux (sécurité vs confort d'administration, redondance vs coût)</li>
+                    </ul>
+                    <p>Vous pouvez expliquer à un stagiaire, un chef de projet et un DSI comment fonctionne l'infrastructure, avec une profondeur adaptée à chaque public.</p>
+                    <p><strong>Votre nouveau superpouvoir</strong> : Vous ne « cliquez » plus sur des serveurs. Vous orchestrez un écosystème d'identités, de politiques et de services. Vous êtes désormais parmi ceux qui maîtrisent vraiment le cœur du système d'information d'entreprise.</p>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <footer class="page-footer">
+        <p>Module Académique : Administration et Sécurisation des Infrastructures Systèmes Windows Server — Reconstruction pour la Maîtrise Expert 500%+</p>
+        <p>© Format pédagogique HTML — Contenu figé et validé.</p>
+    </footer>
+
+    <script>
+        // Script pour la navigation mobile et le suivi des sections actives
+        document.addEventListener('DOMContentLoaded', function() {
+            const hamburger = document.getElementById('hamburger-btn');
+            const mainMenu = document.getElementById('main-menu');
+            const sidebarLinks = document.querySelectorAll('.sidebar-nav a');
+            const mainNavLinks = document.querySelectorAll('.nav-menu a');
+
+            // Gestion du menu hamburger
+            hamburger.addEventListener('click', function() {
+                mainMenu.classList.toggle('active');
+            });
+
+            // Fermer le menu mobile en cliquant sur un lien
+            document.querySelectorAll('.nav-menu a').forEach(link => {
+                link.addEventListener('click', () => {
+                    if (mainMenu.classList.contains('active')) {
+                        mainMenu.classList.remove('active');
+                    }
+                });
+            });
+
+            // Suivi de la section active (scroll)
+            const sections = document.querySelectorAll('.module-section');
+            const navLi = document.querySelectorAll('.sidebar-nav a, .nav-menu a');
+
+            function setActiveSection() {
+                let current = '';
+                sections.forEach(section => {
+                    const sectionTop = section.offsetTop - 150;
+                    const sectionHeight = section.clientHeight;
+                    if (scrollY >= sectionTop && scrollY < sectionTop + sectionHeight) {
+                        current = section.getAttribute('id');
+                    }
+                });
+
+                navLi.forEach(li => {
+                    li.classList.remove('active', 'active-section');
+                    if (li.getAttribute('href') === `#${current}`) {
+                        li.classList.add('active', 'active-section');
+                    }
+                });
+            }
+
+            window.addEventListener('scroll', setActiveSection);
+            // Initialiser l'état actif au chargement
+            setActiveSection();
+        });
+    </script>
+</body>
+</html>
